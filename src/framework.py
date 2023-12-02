@@ -1,78 +1,67 @@
 import pygame
-
 import sys
-from abc import abstractmethod
-from typing import Callable, final
 
-import graphics
+from graphics import Graphics
 
-
+pygame.init()
 clock = pygame.time.Clock()
-_lock = [False]
+screen = pygame.display.set_mode((800, 600))
 
 
-class Game:
-    def __init__(
-        self, width: int = 800, height: int = 600, framerate: int = 60
-    ) -> None:
-        if _lock[0]:
-            raise Exception("Can only create one instance of class")
-        _lock[0] = True
-        self.height = height
-        self.width = width
-        self.framerate = framerate
+def Game():
+    delta = 0
+    pressed_keys = ()
+    draw, load, exit = None, None, None
+    graphics = Graphics(screen)
 
-        pygame.init()
-        self.screen = pygame.display.set_mode((width, height))
-        self.graphics = graphics.Graphics(self.screen)
-        self.delta: int = 0
-        self.auto_clear = True
-        self.pressed_keys = ()
+    def get_graphics():
+        return graphics
 
-    @abstractmethod
-    def update(self):
-        # Not implemented: Need multithreading 😕
-        ...
+    def set_draw(new_draw):
+        nonlocal draw
+        draw = new_draw
 
-    @abstractmethod
-    def draw(self):
-        ...
+    def set_load(new_load):
+        nonlocal load
+        load = new_load
 
-    @abstractmethod
-    def load(self):
-        ...
+    def set_exit(new_exit):
+        nonlocal exit
+        exit = new_exit
 
-    @abstractmethod
-    def exit(self):
-        ...
+    def get_pressed_keys():
+        return pressed_keys
 
-    @final
-    def run(self):
-        self.load()
+    def get_delta():
+        return delta
+
+    def run():
+        nonlocal draw, load, exit, delta, pressed_keys
+
+        if load:
+            load()
 
         while True:
-            self._poll_events()
-            self.pressed_keys = tuple(
-                i for i, k in enumerate(pygame.key.get_pressed()) if k
-            )
-
-            self.delta = clock.get_time()
-
-            if self.auto_clear:
-                self.screen.fill((0, 0, 0))
-
-            self.draw()
+            delta = clock.get_time()
+            for e in pygame.event.get():
+                if e.type == pygame.QUIT:
+                    if exit:
+                        exit()
+                    pygame.quit()
+                    sys.exit()
+            screen.fill((0, 0, 0))
+            pressed_keys = tuple(i for i, k in enumerate(pygame.key.get_pressed()) if k)
+            if draw:
+                draw()
             pygame.display.flip()
+            clock.tick(60)
 
-            clock.tick(self.framerate)
-
-    def _poll_events(self):
-        for e in pygame.event.get():
-            if (
-                e.type == pygame.QUIT
-                or e.type == pygame.KEYDOWN
-                and e.key == pygame.K_q
-            ):
-                self.exit()
-                pygame.quit()
-                sys.exit()
+    return {
+        "get_graphics": get_graphics,
+        "set_draw": set_draw,
+        "set_load": set_load,
+        "set_exit": set_exit,
+        "get_pressed_keys": get_pressed_keys,
+        "get_delta": get_delta,
+        "run": run,
+    }
