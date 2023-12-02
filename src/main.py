@@ -1,5 +1,6 @@
 from typing import final
 from framework import Game
+from graphics.sprites import Human
 
 
 class MyGame(Game):
@@ -17,7 +18,8 @@ class MyGame(Game):
             self.graphics.line((0, i), (self.width, i), (100, 100, 100))
 
         # Draw circle
-        self.graphics.circle((self.sx * 20 + 10, self.sy * 20 + 10), 10)
+        # self.graphics.circle((self.sx * 20 + 10, self.sy * 20 + 10), 10)
+        self.graphics.draw_sprite(Human(self.sx * 20 + 10, self.sy * 20 + 10))
 
         # Movement
         if 79 in self.pressed_keys and self.sx < self.width // 20 - 1:
