@@ -4,7 +4,11 @@ from .sprites import Sprite, IGraphics
 
 
 class Graphics(IGraphics):
-    def __init__(self, surface: pygame.Surface) -> None:
+    def __init__(self, surface: pygame.Surface | None = None) -> None:
+        if surface:
+            self.surface = surface
+
+    def set_surface(self, surface: pygame.Surface):
         self.surface = surface
 
     def circle(
@@ -25,3 +29,6 @@ class Graphics(IGraphics):
 
     def draw_sprite(self, sprite: Sprite) -> None:
         sprite.draw(self)
+
+    def __deepcopy__(self, _):
+        return Graphics()
