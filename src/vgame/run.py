@@ -38,19 +38,25 @@ class Run:
         # Snapshot is a completed (fully updated) copy of the game
         self.snapshot: Game = self.game
 
+        self._snapshot_update_event = threading.Event()
+
         self._run()
 
     def _draw_loop(self):
         clock = pygame.time.Clock()
 
         while self.running:
+            self._snapshot_update_event.wait()
+            snapshot = self.snapshot
+            self._snapshot_update_event.clear()
+
             if self.auto_clear:
                 self.screen.fill((0, 0, 0))
 
             self.game.graphics_delta = clock.get_time() / 1000  # ms -> s
             self.game.fps = clock.get_fps()
 
-            self.snapshot.draw()
+            snapshot.draw()
 
             pygame.display.flip()
 
@@ -65,19 +71,21 @@ class Run:
 
             self.game.update()
 
-            self.snapshot: Game = copy.deepcopy(self.game)
-            self.snapshot.graphics.set_surface(self.screen)
+            if not self._snapshot_update_event.is_set():
+                self.snapshot: Game = copy.deepcopy(self.game)
+                self.snapshot.graphics.set_surface(self.screen)
+                self._snapshot_update_event.set()
 
             update_clock.tick(self.game.tickrate)
             self._poll_events()
 
     def _run(self) -> None:
-        draw_loop = threading.Thread(target=self._draw_loop, daemon=True)
-        draw_loop.start()
+        self._draw_loop_thread = threading.Thread(target=self._draw_loop, daemon=True)
+        self._draw_loop_thread.start()
 
         self._update_loop()
 
-        draw_loop.join()
+        self._draw_loop_thread.join()
 
     def _poll_events(self) -> None:
         for e in pygame.event.get():
@@ -93,6 +101,7 @@ class Run:
                 self.game.pressed_keys.discard(e.key)
 
     def _stop(self) -> None:
+        self._snapshot_update_event.set()
         self.running = False
         self.game.exit()
         pygame.quit()
