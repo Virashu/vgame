@@ -16,7 +16,8 @@ class MyGame(Game):
         self.speed = 20
 
         self.sprites = pygame.sprite.Group()
-        self.sprites.add(MySprite(self.sx * 20 + 10, self.sy * 20 + 10))
+        self.sprite = MySprite(0, 0)
+        self.sprites.add(self.sprite)
 
     @final
     def update(self):
@@ -30,6 +31,11 @@ class MyGame(Game):
             self.sy += distance
         if Keys.UP in self.pressed_keys and self.sy >= 0:
             self.sy -= distance
+
+        self.sprite.x = self.sx * 20 + 10
+        self.sprite.y = self.sy * 20 + 10
+
+        self.sprites.update(self.delta)
 
     @final
     def draw(self):

@@ -2,6 +2,7 @@
 
 
 from vgame.graphics.sprites import Sprite, IGraphics
+from vgame.graphics import load_image, make_copyable_surface
 import pygame
 
 
@@ -37,11 +38,15 @@ class MySprite(Sprite):
         self.x = x
         self.y = y
 
-        self.image = pygame.image.load("test_sprite.jpg")
+        self.image = load_image("test_sprite.jpg")
+        self.image = make_copyable_surface(
+            pygame.transform.scale(self.image, (100, 100))
+        )
 
         self.rect = self.image.get_rect()
         self.rect.x = int(self.x - self.rect.width / 2)
         self.rect.y = int(self.y - self.rect.height / 2)
 
     def update(self, delta: float) -> None:
-        return super().update(delta)
+        self.rect.x = int(self.x - self.rect.width / 2)
+        self.rect.y = int(self.y - self.rect.height / 2)
