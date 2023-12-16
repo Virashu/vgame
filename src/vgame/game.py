@@ -22,6 +22,11 @@ class Game:
         self.pressed_keys: set = set()
         self.delta: float = 0  # Time delta for tickrate, not framerate; seconds
 
+        # ?
+        self.graphics_delta: float = 0
+        self.fps: float = 0
+        self.tps: float = 0
+
         self.graphics = Graphics()
         # Then need to call game.graphics.set_surface(...) from runner
 

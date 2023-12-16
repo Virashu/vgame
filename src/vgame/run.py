@@ -15,6 +15,9 @@ class Run:
         cls.__lock = True
         return object.__new__(cls)
 
+    def __del__(self):
+        self.__class__.__lock = False
+
     def __init__(self, game: Game) -> None:
         self.game: Game = game
 
@@ -32,6 +35,7 @@ class Run:
         )
         self.game.graphics.set_surface(self.screen)
 
+        # Snapshot is a completed (fully updated) copy of the game
         self.snapshot: Game = self.game
 
         self._run()
@@ -43,25 +47,29 @@ class Run:
             if self.auto_clear:
                 self.screen.fill((0, 0, 0))
 
+            self.game.graphics_delta = clock.get_time() / 1000  # ms -> s
+            self.game.fps = clock.get_fps()
+
             self.snapshot.draw()
 
             pygame.display.flip()
+
             clock.tick(self.game.framerate)
 
     def _update_loop(self) -> None:
-        clock = pygame.time.Clock()
+        update_clock = pygame.time.Clock()
 
         while self.running:
-            self._poll_events()
-
-            self.game.delta = clock.get_time() / 1000  # ms -> s
+            self.game.delta = update_clock.get_time() / 1000  # ms -> s
+            self.game.tps = update_clock.get_fps()
 
             self.game.update()
 
             self.snapshot: Game = copy.deepcopy(self.game)
             self.snapshot.graphics.set_surface(self.screen)
 
-            clock.tick(self.game.tickrate)
+            update_clock.tick(self.game.tickrate)
+            self._poll_events()
 
     def _run(self) -> None:
         draw_loop = threading.Thread(target=self._draw_loop, daemon=True)
@@ -85,6 +93,6 @@ class Run:
                 self.game.pressed_keys.discard(e.key)
 
     def _stop(self) -> None:
-        self.game.exit()
         self.running = False
+        self.game.exit()
         pygame.quit()

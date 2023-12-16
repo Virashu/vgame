@@ -8,7 +8,7 @@ class Graphics(IGraphics):
         if surface:
             self.surface = surface
 
-    def set_surface(self, surface: pygame.Surface):
+    def set_surface(self, surface: pygame.Surface) -> None:
         self.surface = surface
 
     def circle(
@@ -27,8 +27,23 @@ class Graphics(IGraphics):
     ) -> None:
         pygame.draw.line(self.surface, color, start, end)
 
+    def polygon(
+        self,
+        points: tuple[tuple[float, float]],
+        color: tuple[int, int, int] = (255, 255, 255),
+    ) -> None:
+        pygame.draw.polygon(self.surface, color, points)
+
+    def rectangle(
+        self,
+        xy: tuple[float, float],
+        size: tuple[float, float],
+        color: tuple[int, int, int] = (255, 255, 255),
+    ) -> None:
+        pygame.draw.rect(self.surface, color, (xy, size))
+
     def draw_sprite(self, sprite: Sprite) -> None:
         sprite.draw(self)
 
-    def __deepcopy__(self, _):
+    def __deepcopy__(self, _) -> "Graphics":
         return Graphics()
