@@ -11,6 +11,9 @@ class Graphics(IGraphics):
     def set_surface(self, surface: pygame.Surface) -> None:
         self.surface = surface
 
+    def get_surface(self) -> pygame.Surface:
+        return self.surface
+
     def circle(
         self,
         xy: tuple[float, float],

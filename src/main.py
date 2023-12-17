@@ -44,7 +44,7 @@ class MyGame(Game):
         for i in range(20, self.height, 20):
             self.graphics.line((0, i), (self.width, i), (100, 100, 100))
 
-        self.sprites.draw(self.graphics.surface)
+        self.sprites.draw(self.graphics.get_surface())
 
     @final
     def exit(self):
