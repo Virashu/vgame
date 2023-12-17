@@ -14,11 +14,11 @@
 
 - [x] Basic structure
 - [ ] Graphics
-  - [x] Texture library ([feature/pygame-sprites](https://github.com/Virashu/pygametest/tree/feature/pygame-sprites))
+  - [x] Texture library
 - [ ] Backend
   - [x] Draw/update loops in separate threads
   - [x] Snapshots
   - [x] Snapshot synchronization
-  - [ ] PyGame sprite integration  ([feature/pygame-sprites](https://github.com/Virashu/pygametest/tree/feature/pygame-sprites))
+  - [x] PyGame sprite integration
   - [ ] Axis
   - [ ] Sounds
