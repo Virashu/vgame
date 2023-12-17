@@ -4,6 +4,7 @@ import copy
 import threading
 
 from . import Game
+from .graphics.sprites import Library
 
 
 class Run:
@@ -23,6 +24,8 @@ class Run:
 
         pygame.init()
 
+        self.library = Library()
+        self.game.graphics.library = self.library
         self.game.load()
 
         pygame.display.set_caption(self.game.title)
@@ -38,6 +41,8 @@ class Run:
         self._snapshot: Game = self.game
 
         self._snapshot_update_event = threading.Event()
+
+        self.game.graphics.surface = self.screen
 
         self._run()
 
@@ -57,7 +62,6 @@ class Run:
             )  # ms -> s
             self.game.fps = snapshot.fps = clock.get_fps()
 
-            snapshot.graphics.set_surface(self.screen)
             snapshot.draw()
 
             pygame.display.flip()

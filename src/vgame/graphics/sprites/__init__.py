@@ -1,7 +1,6 @@
 __all__ = [
     "Sprite",
-    "Circle",
-    "Human",
+    "Library",
 ]
 import pygame
 
@@ -39,5 +38,4 @@ class IGraphics:
 
 
 from .sprite import Sprite
-from .circle import Circle
-from .human import Human
+from .library import Library
