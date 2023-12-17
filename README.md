@@ -8,3 +8,17 @@
 <br>
 
 ![cat](./.github/cat.webp)
+
+
+## TODO
+
+- [x] Basic structure
+- [ ] Graphics
+  - [x] Texture library ([feature/pygame-sprites](https://github.com/Virashu/pygametest/tree/feature/pygame-sprites))
+- [ ] Backend
+  - [x] Draw/update loops in separate threads
+  - [x] Snapshots
+  - [x] Snapshot synchronization
+  - [ ] PyGame sprite integration  ([feature/pygame-sprites](https://github.com/Virashu/pygametest/tree/feature/pygame-sprites))
+  - [ ] Axis
+  - [ ] Sounds
