@@ -1,6 +1,6 @@
 from abc import abstractmethod
 
-from . import ISprite, IGraphics
+from . import ISprite
 
 from pygame import sprite
 

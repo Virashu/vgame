@@ -38,10 +38,15 @@ class MySprite(Sprite):
         self.x = x
         self.y = y
 
-        self.image = load_image("test_sprite.jpg")
-        self.image = make_copyable_surface(
-            pygame.transform.scale(self.image, (100, 100))
-        )
+        # 🩼🩼🩼
+
+        # self.image = load_image("test_sprite.jpg")
+        # self.image = make_copyable_surface(
+        #     pygame.transform.scale(self.image, (100, 100))
+        # )
+
+        self.image = pygame.image.load("test_sprite.jpg")
+        self.image = pygame.transform.scale(self.image, (100, 100))
 
         self.rect = self.image.get_rect()
         self.rect.x = int(self.x - self.rect.width / 2)
