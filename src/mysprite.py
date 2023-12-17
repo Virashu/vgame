@@ -1,30 +1,21 @@
 """An example sprite"""
 
 
-from vgame.graphics.sprites import Sprite, IGraphics
+from vgame.graphics.sprites import Sprite
 
 
 class MySprite(Sprite):
     def __init__(self, x: float, y: float) -> None:
+        super().__init__()
         self.x = x
         self.y = y
 
-    def draw(self, graphics: IGraphics) -> None:
-        graphics.line(
-            (self.x - 10, self.y - 10),
-            (self.x, self.y),
-        )
-        graphics.line(
-            (self.x + 10, self.y - 10),
-            (self.x, self.y),
-        )
+        self.texture_file = "test_sprite.png"
+        self.texture_size = (32, 32)
 
-        graphics.circle((self.x, self.y), 10)
+        self._rect.x = int(self.x - self._rect.width / 2)
+        self._rect.y = int(self.y - self._rect.height / 2)
 
-        graphics.line((self.x, self.y), (self.x, self.y + 30))
-
-        graphics.line((self.x, self.y + 10), (self.x - 20, self.y + 20))
-        graphics.line((self.x, self.y + 10), (self.x + 20, self.y + 20))
-
-        graphics.line((self.x, self.y + 30), (self.x - 20, self.y + 60))
-        graphics.line((self.x, self.y + 30), (self.x + 20, self.y + 60))
+    def update(self, delta: float) -> None:
+        self._rect.x = int(self.x - self._rect.width / 2)
+        self._rect.y = int(self.y - self._rect.height / 2)

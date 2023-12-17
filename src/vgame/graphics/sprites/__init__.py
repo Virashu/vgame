@@ -1,7 +1,7 @@
 __all__ = [
     "Sprite",
-    "Circle",
-    "Human",
+    "Library",
+    "Group",
 ]
 import pygame
 
@@ -15,6 +15,9 @@ class ISprite:
 
 
 class IGraphics:
+    surface: pygame.Surface
+    library: "Library"
+
     def __init__(self, screen: pygame.Surface) -> None:
         ...
 
@@ -39,5 +42,5 @@ class IGraphics:
 
 
 from .sprite import Sprite
-from .circle import Circle
-from .human import Human
+from .library import Library
+from .group import Group

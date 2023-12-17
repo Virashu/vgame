@@ -4,6 +4,7 @@ import copy
 import threading
 
 from . import Game
+from .graphics.sprites import Library
 
 
 class Run:
@@ -23,6 +24,8 @@ class Run:
 
         pygame.init()
 
+        self.library = Library()
+        self.game.graphics.library = self.library
         self.game.load()
 
         pygame.display.set_caption(self.game.title)
@@ -33,12 +36,13 @@ class Run:
         self.screen: pygame.Surface = pygame.display.set_mode(
             (self.game.width, self.game.height)
         )
-        self.game.graphics.set_surface(self.screen)
 
         # Snapshot is a completed (fully updated) copy of the game
-        self.snapshot: Game = self.game
+        self._snapshot: Game = self.game
 
         self._snapshot_update_event = threading.Event()
+
+        self.game.graphics.surface = self.screen
 
         self._run()
 
@@ -47,14 +51,16 @@ class Run:
 
         while self.running:
             self._snapshot_update_event.wait()
-            snapshot = self.snapshot
+            snapshot = self._snapshot
             self._snapshot_update_event.clear()
 
             if self.auto_clear:
                 self.screen.fill((0, 0, 0))
 
-            self.game.graphics_delta = clock.get_time() / 1000  # ms -> s
-            self.game.fps = clock.get_fps()
+            self.game.graphics_delta = snapshot.graphics_delta = (
+                clock.get_time() / 1000
+            )  # ms -> s
+            self.game.fps = snapshot.fps = clock.get_fps()
 
             snapshot.draw()
 
@@ -72,8 +78,8 @@ class Run:
             self.game.update()
 
             if not self._snapshot_update_event.is_set():
-                self.snapshot: Game = copy.deepcopy(self.game)
-                self.snapshot.graphics.set_surface(self.screen)
+                self._snapshot: Game = copy.deepcopy(self.game)
+                # self._snapshot.graphics.set_surface(self.screen)
                 self._snapshot_update_event.set()
 
             update_clock.tick(self.game.tickrate)
