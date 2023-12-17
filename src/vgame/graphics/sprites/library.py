@@ -30,3 +30,8 @@ class Library:
 
         self._data[resource_name] = texture
         sprite.set_texture(resource_name)
+
+    def get(self, name: str) -> pygame.Surface:
+        if name not in self._data:
+            raise KeyError(f"Texture not found: {name}")
+        return self._data[name]

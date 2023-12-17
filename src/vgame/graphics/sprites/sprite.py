@@ -23,6 +23,10 @@ class Sprite(ISprite, sprite.Sprite):
         self._rect.h = rect.h
         self._rect.w = rect.w
 
+    @property
+    def image(self):
+        return
+
     def set_texture(self, id: str) -> None:
         self.texture = id
 
