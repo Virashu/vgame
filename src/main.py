@@ -11,17 +11,18 @@ from mysprite import MySprite
 class MyGame(Game):
     @final
     def load(self):
+        # Directory with textures
         self.graphics.library.path = __file__.replace("\\", "/").rsplit("/", 1)[0]
-        self.sx1, self.sy1 = 0, 0
+
         self.sx, self.sy = 0, 0
+        self.sx1, self.sy1 = 0, 0
+
         self.speed = 20
 
-        self.sprite = MySprite(20, 20)
-        self.sprite1 = MySprite(50, 50)
-        self.sprite1.texture_size = (100, 100)
+        self.sprite = MySprite(20, 20, 30, 70)
+        self.sprite1 = MySprite(50, 50, 100, 100)
 
-        self.graphics.library.add(self.sprite)
-        self.graphics.library.add(self.sprite1)
+        self.graphics.library.add(self.sprite, self.sprite1)
 
         self.group = Group(self.sprite1, self.sprite)
 
@@ -54,9 +55,6 @@ class MyGame(Game):
         self.sprite1.x = self.sx1 * 20 + 10
         self.sprite1.y = self.sy1 * 20 + 10
 
-        # self.sprite.update(self.delta)
-        # self.sprite1.update(self.delta)
-
         self.group.update(self.delta)
 
     @final
@@ -77,10 +75,9 @@ class MyGame(Game):
     def print_stats(self):
         print("\x1b[?25l", end="")  # hide cursor
         print("\x1b[2J\x1b[0;0H", end="")  # clear screen
-        print(f"FPS: {self.fps:.2f}")
-        print(f"TPS: {self.tps:.2f}")
-        print(f"Delta: {self.delta:.4f}")
-        print(f"{self.graphics.library._data}")
+        print(f"FPS:\t{self.fps:.2f}")
+        print(f"TPS:\t{self.tps:.2f}")
+        print(f"Delta:\t{self.delta:.4f}")
         print("\x1b[?25h", end="")  # show cursor
         print()
 

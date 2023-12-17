@@ -16,7 +16,11 @@ class Library:
     def path(self, path: str) -> None:
         self._path = path
 
-    def add(self, sprite: Sprite) -> None:
+    def add(self, *sprites: Sprite) -> None:
+        for sprite in sprites:
+            self._add(sprite)
+
+    def _add(self, sprite: Sprite) -> None:
         texture_name = sprite.texture_file
         texture = pygame.image.load(self._path + "/" + texture_name)
         rect = texture.get_rect()
