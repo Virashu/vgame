@@ -15,11 +15,19 @@ This thing replicates [Love2D](https://love2d.org)-like [interface](#how-to-use)
 
 ## How to install
 
+### Using pip VCS features
 ```shell
-git clone https://github.com/virashu/pygametest
-cd pygametest
-
 python3 -m venv .env
+
+pip install git+https://github.com/virashu/pygametest.git
+```
+
+### Manually
+```shell
+python3 -m venv .env
+
+git clone https://github.com/virashu/pygametest.git
+cd pygametest
 
 pip install .
 ```
@@ -34,23 +42,23 @@ Structure looks like this:
 from vgame import Game, Run
 
 class MyGame(Game):
-  def load(self):
-    # actions before game loads
+    def load(self):
+      # actions before game loads
 
-  def update(self):
-    # update loop
-    # + delta time
+    def update(self):
+      # update loop
+      # + delta time
 
-  def draw(self):
-    # draw loop
-    # + graphics object
+    def draw(self):
+      # draw loop
+      # + graphics object
 
-  def exit(self):
-    # actions before exit
+    def exit(self):
+      # actions before exit
 
 
 Run(
-  MyGame(width=800, height=600, framerate=120, tickrate=120, title="Game")
+    MyGame(width=800, height=600, framerate=120, tickrate=120, title="Game")
 )
 
 ```
