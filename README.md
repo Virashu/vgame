@@ -76,3 +76,5 @@ Run(
   - [x] PyGame sprite integration
   - [ ] Axis
   - [ ] Sounds
+  - [ ] Event handling
+  - [ ] quit method
