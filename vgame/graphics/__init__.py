@@ -1,3 +1,5 @@
+"""Module for working with graphics"""
+
 __all__ = [
     "Graphics",
     "Sprite",

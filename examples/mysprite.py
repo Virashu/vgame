@@ -1,7 +1,7 @@
 """An example sprite"""
 
 
-from vgame.graphics.sprites import Sprite
+from vgame.graphics.sprites import Sprite, IGraphics
 
 
 class MySprite(Sprite):
@@ -19,3 +19,6 @@ class MySprite(Sprite):
     def update(self, delta: float) -> None:
         self._rect.x = int(self.x - self._rect.width / 2)
         self._rect.y = int(self.y - self._rect.height / 2)
+
+    def draw(self, graphics: "IGraphics") -> None:
+        graphics.draw_sprite(self)

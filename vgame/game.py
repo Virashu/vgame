@@ -1,10 +1,33 @@
-from abc import abstractmethod
+"""
+Definition of abstract class Game
+"""
 
+
+from abc import abstractmethod
 
 from .graphics import Graphics
 
 
 class Game:
+    """Abstract game class
+
+    Arguments:
+        width: int
+            Width of game window
+
+        height: int
+            Height of game window
+
+        framerate: int
+            Frames per second (draw loop)
+
+        tickrate: int
+            Ticks per second (update loop)
+
+        title: str
+            Title of game window
+    """
+
     def __init__(
         self,
         width: int = 800,
@@ -19,10 +42,8 @@ class Game:
         self.tickrate = tickrate  # for update() method (backend)
         self.title = title
 
-        self.pressed_keys: set = set()
+        self.pressed_keys: set[int] = set()
         self.delta: float = 0  # Time delta for tickrate, not framerate; seconds
-
-        # ?
         self.graphics_delta: float = 0
         self.fps: float = 0
         self.tps: float = 0
@@ -38,7 +59,6 @@ class Game:
 
         Can access delta time using `self.delta` variable
         """
-        ...
 
     @abstractmethod
     def draw(self):
@@ -46,7 +66,6 @@ class Game:
 
         Called according to framerate
         """
-        ...
 
     @abstractmethod
     def load(self):
@@ -54,7 +73,6 @@ class Game:
 
         Called after main initialization
         """
-        ...
 
     @abstractmethod
     def exit(self):
@@ -62,4 +80,3 @@ class Game:
 
         Called before application close
         """
-        ...

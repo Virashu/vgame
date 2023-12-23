@@ -1,22 +1,29 @@
+"""Sprite texture library class definition"""
+
 import pygame
 
 from . import Sprite
 
 
 class Library:
+    """Sprite texture library"""
+
     def __init__(self) -> None:
         self._data: dict[str, pygame.Surface] = {}
         self._path: str = ""
 
     @property
     def path(self) -> str:
+        """Get the path to the sprite images"""
         return self._path
 
     @path.setter
     def path(self, path: str) -> None:
+        """Set the path to the sprite images"""
         self._path = path
 
     def add(self, *sprites: Sprite) -> None:
+        """Add a sprite to the library"""
         for sprite in sprites:
             self._add(sprite)
 
@@ -28,7 +35,7 @@ class Library:
             texture = pygame.transform.scale(texture, sprite.texture_size)
             rect.w, rect.h = sprite.texture_size
 
-        sprite._rect = rect
+        sprite.set_size(rect)
 
         resource_name = f"{texture_name}_{hash(texture)}"
 
@@ -36,6 +43,7 @@ class Library:
         sprite.set_texture(resource_name)
 
     def get(self, name: str) -> pygame.Surface:
+        """Get a sprite from the library"""
         if name not in self._data:
             raise KeyError(f"Texture not found: {name}")
         return self._data[name]

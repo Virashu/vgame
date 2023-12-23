@@ -1,23 +1,33 @@
-import pygame
+"""Game runner class definition"""
 
 import copy
 import threading
 
-from . import Game
+import pygame
+import pygame.constants as pg_constants
+
+from . import Game, Keys
 from .graphics.sprites import Library
 
 
 class Run:
+    """Game runner class"""
+
     __lock = False
 
-    def __new__(cls, *_, **__):
+    @classmethod
+    def clear_lock(cls) -> None:
+        """Clear the instance lock"""
+        cls.__lock = False
+
+    def __new__(cls, game: Game) -> "Run":
         if cls.__lock:
-            raise Exception("Can only create one instance of class")
+            raise RuntimeError("Can only create one instance of class")
         cls.__lock = True
         return object.__new__(cls)
 
     def __del__(self):
-        self.__class__.__lock = False
+        self.__class__.clear_lock()
 
     def __init__(self, game: Game) -> None:
         self.game: Game = game
@@ -96,14 +106,14 @@ class Run:
     def _poll_events(self) -> None:
         for e in pygame.event.get():
             if (
-                e.type == pygame.QUIT
-                or e.type == pygame.KEYDOWN
-                and e.key == pygame.K_q
+                e.type == pg_constants.QUIT
+                or e.type == pg_constants.KEYDOWN
+                and e.key == Keys.Q
             ):
                 self._stop()
-            elif e.type == pygame.KEYDOWN:
+            elif e.type == pg_constants.KEYDOWN:
                 self.game.pressed_keys.add(e.key)
-            elif e.type == pygame.KEYUP:
+            elif e.type == pg_constants.KEYUP:
                 self.game.pressed_keys.discard(e.key)
 
     def _stop(self) -> None:
@@ -111,3 +121,6 @@ class Run:
         self.running = False
         self.game.exit()
         pygame.quit()
+
+
+del pg_constants
