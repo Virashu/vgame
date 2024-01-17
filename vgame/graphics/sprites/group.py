@@ -8,7 +8,7 @@ from pygame import Surface
 from . import Sprite, Library, IGraphics
 
 
-class Group(pygame.sprite.Group[Any]):
+class Group(pygame.sprite.Group):
     """Sprite group class"""
 
     def draw(self, graphics: IGraphics, special_flags: int = 0) -> list[pygame.Rect]:
