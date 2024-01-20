@@ -121,6 +121,3 @@ class Run:
         self.running = False
         self.game.exit()
         pygame.quit()
-
-
-del pg_constants

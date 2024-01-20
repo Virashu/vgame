@@ -5,6 +5,7 @@ from typing import final
 
 from vgame import Game, Run, Keys
 from vgame.graphics.sprites import Group
+
 from mysprite import MySprite
 
 
@@ -28,7 +29,7 @@ class MyGame(Game):
 
     @final
     def update(self):
-        # self.print_stats()
+        self.print_stats()
         distance = self.speed * self.delta
 
         if Keys.RIGHT in self.pressed_keys and self.sx <= self.width // 20 - 1:

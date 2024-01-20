@@ -5,8 +5,8 @@
 
 <p align="center">My try to build game engine on top of PyGame
 
-This thing replicates [Love2D](https://love2d.org)-like [interface](#how-to-use)
-<br>
+This thing replicates Love2D<sup id="a1">[1](#f1)</sup>-like [interface](#how-to-use)
+
 <br>
 
 ![cat](./.github/cat.webp)
@@ -78,3 +78,8 @@ Run(
   - [ ] Sounds
   - [ ] Event handling
   - [ ] quit method
+
+## Footnotes
+
+<b id="f1">1</b> Love2D is an 2D game engine for lua available [here](https://love2d.org).
+[↩](#a1)
