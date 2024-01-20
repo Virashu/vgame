@@ -76,6 +76,6 @@ class IGraphics:
         """Draw a rectangle"""
 
 
-from .sprite import Sprite
-from .library import Library
-from .group import Group
+from vgame.graphics.sprites.sprite import Sprite
+from vgame.graphics.sprites.library import Library
+from vgame.graphics.sprites.group import Group

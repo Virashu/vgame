@@ -5,7 +5,7 @@ Definition of abstract class Game
 
 from abc import abstractmethod
 
-from .graphics import Graphics
+from vgame.graphics import Graphics
 
 
 class Game:

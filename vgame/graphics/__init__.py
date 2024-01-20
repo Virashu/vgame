@@ -6,6 +6,6 @@ __all__ = [
     "Library",
 ]
 
-from .graphics import Graphics
-from .sprites.sprite import Sprite
-from .sprites.library import Library
+from vgame.graphics.graphics import Graphics
+from vgame.graphics.sprites.sprite import Sprite
+from vgame.graphics.sprites.library import Library

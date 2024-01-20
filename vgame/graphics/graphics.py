@@ -5,7 +5,7 @@ from typing import Sequence
 
 import pygame
 
-from .sprites import Sprite, IGraphics, Library
+from vgame.graphics.sprites import Sprite, IGraphics, Library
 
 
 class Graphics(IGraphics):

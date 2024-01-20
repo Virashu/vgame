@@ -1,11 +1,9 @@
 """Sprite group class definition"""
 
-from typing import Any
-
 import pygame
 from pygame import Surface
 
-from . import Sprite, Library, IGraphics
+from vgame.graphics.sprites import Sprite, Library, IGraphics
 
 
 class Group(pygame.sprite.Group):

@@ -2,7 +2,7 @@
 
 import pygame
 
-from . import Sprite
+from vgame.graphics.sprites import Sprite
 
 
 class Library:

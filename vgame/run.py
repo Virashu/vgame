@@ -6,8 +6,8 @@ import threading
 import pygame
 import pygame.constants as pg_constants
 
-from . import Game, Keys
-from .graphics.sprites import Library
+from vgame import Game, Keys
+from vgame.graphics.sprites import Library
 
 
 class Run:
