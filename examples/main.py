@@ -23,7 +23,7 @@ class MyGame(Game):
         self.sprite = MySprite(20, 20, 30, 70)
         self.sprite1 = MySprite(50, 50, 100, 100)
 
-        self.graphics.library.add(self.sprite, self.sprite1)
+        self.graphics.library.load(self.sprite, self.sprite1)
 
         self.group = Group(self.sprite1, self.sprite)
 

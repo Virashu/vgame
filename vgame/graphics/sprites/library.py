@@ -22,14 +22,14 @@ class Library:
         """Set the path to the sprite images"""
         self._path = path
 
-    def add(self, *sprites: Sprite) -> None:
-        """Add a sprite to the library"""
+    def load(self, *sprites: Sprite) -> None:
+        """Preload sprite to the library"""
         for sprite in sprites:
             self._add(sprite)
 
     def _add(self, sprite: Sprite) -> None:
-        texture_name = sprite.texture_file
-        texture = pygame.image.load(self._path + "/" + texture_name)
+        texture_file, texture_size = sprite.texture_file, sprite.texture_size
+        texture = pygame.image.load(self._path + "/" + texture_file)
         rect = texture.get_rect()
         if sprite.texture_size not in ((0, 0), (rect.w, rect.h)):
             texture = pygame.transform.scale(texture, sprite.texture_size)
@@ -37,13 +37,21 @@ class Library:
 
         sprite.set_size(rect)
 
-        resource_name = f"{texture_name}_{hash(texture)}"
+        resource_name = f"{texture_file}_{texture_size}"
 
         self._data[resource_name] = texture
-        sprite.set_texture(resource_name)
 
-    def get(self, name: str) -> pygame.Surface:
-        """Get a sprite from the library"""
-        if name not in self._data:
-            raise KeyError(f"Texture not found: {name}")
-        return self._data[name]
+    def get(self, target: Sprite) -> pygame.Surface:
+        """Get a texture from the library"""
+        texture_file, texture_size = target.texture_file, target.texture_size
+        texture_id = f"{texture_file}_{texture_size}"
+
+        if texture := self._data.get(texture_id):
+            return texture
+
+        self._add(target)
+
+        texture = self._data[texture_id]
+        print(texture)
+
+        return texture

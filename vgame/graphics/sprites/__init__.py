@@ -32,6 +32,14 @@ class IGraphics:
     _surface: pygame.Surface
     _library: "Library"
 
+    @property
+    def surface(self) -> pygame.Surface:
+        ...
+
+    @property
+    def library(self) -> "Library":
+        ...
+
     @abstractmethod
     def __init__(self, screen: pygame.Surface) -> None:
         ...

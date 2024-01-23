@@ -72,13 +72,13 @@ class Graphics(IGraphics):
 
     def draw_sprite(self, target: Sprite | Sequence[Sprite]) -> None:
         if isinstance(target, Sprite):
-            texture = self._library.get(target.texture)
-            rect = target.rect
 
-            self._surface.blit(texture, rect)
+            texture = self._library.get(target)
+
+            self._surface.blit(texture, target.rect)
         else:
             self._surface.blits(
-                [(self._library.get(sprite.texture), sprite.rect) for sprite in target]
+                [(self._library.get(sprite), sprite.rect) for sprite in target]
             )
 
     def __deepcopy__(self, _) -> "Graphics":

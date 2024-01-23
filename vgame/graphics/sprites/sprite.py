@@ -13,8 +13,8 @@ class Sprite(ISprite, sprite.Sprite):
     def __init__(self) -> None:
         super().__init__()
 
-        self.texture_file: str = ""
-        self.texture: str = ""
+        self.texture_file: str = ""  # filename
+        self.texture: str = ""  # hash id
         self.texture_size: tuple[int, int] = (0, 0)
         self._rect: Rect = Rect(0, 0, 0, 0)
 
@@ -31,10 +31,6 @@ class Sprite(ISprite, sprite.Sprite):
         """Set sprite size"""
         self._rect.h = rect.h
         self._rect.w = rect.w
-
-    def set_texture(self, texture_id: str) -> None:
-        """Set sprite texture id"""
-        self.texture = texture_id
 
     @abstractmethod
     def update(self, delta: float) -> None:
