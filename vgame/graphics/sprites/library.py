@@ -52,6 +52,5 @@ class Library:
         self._add(target)
 
         texture = self._data[texture_id]
-        print(texture)
 
         return texture
