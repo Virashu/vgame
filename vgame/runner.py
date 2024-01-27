@@ -10,7 +10,7 @@ from vgame import Scene, Keys
 from vgame.graphics.sprites import Library
 
 
-class Run:
+class Runner:
     """Scene runner class"""
 
     __lock = False
@@ -20,7 +20,7 @@ class Run:
         """Clear the instance lock"""
         cls.__lock = False
 
-    def __new__(cls, game: Scene) -> "Run":
+    def __new__(cls) -> "Runner":
         if cls.__lock:
             raise RuntimeError("Can only create one instance of class")
         cls.__lock = True
@@ -29,18 +29,30 @@ class Run:
     def __del__(self):
         self.__class__.clear_lock()
 
-    def __init__(self, game: Scene) -> None:
-        self.game: Scene = game
+    def __init__(self) -> None:
+        self.library = Library()
+        self.auto_clear = True
+        self._snapshot_update_event = threading.Event()
 
         pygame.init()
 
-        self.library = Library()
+        self.game: Scene
+        self.screen: pygame.Surface
+        self._snapshot: Scene
+
+        self.running = True
+
+    def run(self, scene: Scene) -> None:
+        """Run a scene"""
+        if not self.running:
+            return
+
+        self.game: Scene = scene
+
         self.game.graphics.library = self.library
         self.game.load()
 
         pygame.display.set_caption(self.game.title)
-
-        self.auto_clear = True
 
         self.screen: pygame.Surface = pygame.display.set_mode(
             (self.game.width, self.game.height)
@@ -48,8 +60,6 @@ class Run:
 
         # Snapshot is a completed (fully updated) copy of the game
         self._snapshot: Scene = self.game
-
-        self._snapshot_update_event = threading.Event()
 
         self.game.graphics.surface = self.screen
 
@@ -116,3 +126,4 @@ class Run:
         self.game.stop()
         self.game.exit()
         pygame.quit()
+        self.running = False
