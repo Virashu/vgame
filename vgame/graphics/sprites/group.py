@@ -1,9 +1,8 @@
 """Sprite group class definition"""
 
 import pygame
-from pygame import Surface
 
-from vgame.graphics.sprites import Sprite, Library, IGraphics
+from vgame.graphics.sprites import Sprite, IGraphics
 
 
 class Group(pygame.sprite.Group):
@@ -15,14 +14,17 @@ class Group(pygame.sprite.Group):
 
         if hasattr(graphics.surface, "blits"):
             sprites_iter = tuple(
-                (graphics.library.get(spr), spr.rect, None, special_flags) for spr in sprites
+                (graphics.library.get(spr), spr.rect, None, special_flags)
+                for spr in sprites
             )
             rects = graphics.surface.blits(sprites_iter)  # type: ignore
             if rects:
                 self.spritedict.update(zip(sprites, rects))
         else:
             for spr in sprites:
-                rect = graphics.surface.blit(graphics.library.get(spr), spr.rect, None, special_flags)
+                rect = graphics.surface.blit(
+                    graphics.library.get(spr), spr.rect, None, special_flags
+                )
                 self.spritedict[spr] = rect
 
         self.lostsprites = []

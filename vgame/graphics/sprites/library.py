@@ -2,7 +2,7 @@
 
 import pygame
 
-from vgame.graphics.sprites import Sprite
+from vgame.graphics.sprites.types import ISprite, ILibrary
 
 
 class Library:
@@ -22,12 +22,12 @@ class Library:
         """Set the path to the sprite images"""
         self._path = path
 
-    def load(self, *sprites: Sprite) -> None:
+    def load(self, *sprites: ISprite) -> None:
         """Preload sprite to the library"""
         for sprite in sprites:
             self._add(sprite)
 
-    def _add(self, sprite: Sprite) -> None:
+    def _add(self, sprite: ISprite) -> None:
         texture_file, texture_size = sprite.texture_file, sprite.texture_size
         texture = pygame.image.load(self._path + "/" + texture_file)
         rect = texture.get_rect()
@@ -41,7 +41,7 @@ class Library:
 
         self._data[resource_name] = texture
 
-    def get(self, target: Sprite) -> pygame.Surface:
+    def get(self, target: ISprite) -> pygame.Surface:
         """Get a texture from the library"""
         texture_file, texture_size = target.texture_file, target.texture_size
         texture_id = f"{texture_file}_{texture_size}"

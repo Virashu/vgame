@@ -72,7 +72,6 @@ class Graphics(IGraphics):
 
     def draw_sprite(self, target: Sprite | Sequence[Sprite]) -> None:
         if isinstance(target, Sprite):
-
             texture = self._library.get(target)
 
             self._surface.blit(texture, target.rect)
