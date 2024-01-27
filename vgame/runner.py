@@ -1,4 +1,4 @@
-"""Game runner class definition"""
+"""Scene runner class definition"""
 
 import copy
 import threading
@@ -6,12 +6,12 @@ import threading
 import pygame
 import pygame.constants as pg_constants
 
-from vgame import Game, Keys
+from vgame import Scene
 from vgame.graphics.sprites import Library
 
 
-class Run:
-    """Game runner class"""
+class Runner:
+    """Scene runner class"""
 
     __lock = False
 
@@ -20,7 +20,7 @@ class Run:
         """Clear the instance lock"""
         cls.__lock = False
 
-    def __new__(cls, game: Game) -> "Run":
+    def __new__(cls) -> "Runner":
         if cls.__lock:
             raise RuntimeError("Can only create one instance of class")
         cls.__lock = True
@@ -29,28 +29,38 @@ class Run:
     def __del__(self):
         self.__class__.clear_lock()
 
-    def __init__(self, game: Game) -> None:
-        self.game: Game = game
+    def __init__(self) -> None:
+        self.library = Library()
+        self.auto_clear = True
+        self._snapshot_update_event = threading.Event()
 
         pygame.init()
 
-        self.library = Library()
+        self.game: Scene
+        self.screen: pygame.Surface
+        self._snapshot: Scene
+        self._draw_loop_thread: threading.Thread
+
+        self.running = True
+
+    def run(self, scene: Scene) -> None:
+        """Run a scene"""
+        if not self.running:
+            return
+
+        self.game: Scene = scene
+
         self.game.graphics.library = self.library
         self.game.load()
 
         pygame.display.set_caption(self.game.title)
-
-        self.auto_clear = True
-        self.running = True
 
         self.screen: pygame.Surface = pygame.display.set_mode(
             (self.game.width, self.game.height)
         )
 
         # Snapshot is a completed (fully updated) copy of the game
-        self._snapshot: Game = self.game
-
-        self._snapshot_update_event = threading.Event()
+        self._snapshot: Scene = self.game
 
         self.game.graphics.surface = self.screen
 
@@ -59,7 +69,7 @@ class Run:
     def _draw_loop(self):
         clock = pygame.time.Clock()
 
-        while self.running:
+        while self.game.running:
             self._snapshot_update_event.wait()
             snapshot = self._snapshot
             self._snapshot_update_event.clear()
@@ -81,14 +91,14 @@ class Run:
     def _update_loop(self) -> None:
         update_clock = pygame.time.Clock()
 
-        while self.running:
+        while self.game.running:
             self.game.delta = update_clock.get_time() / 1000  # ms -> s
             self.game.tps = update_clock.get_fps()
 
             self.game.update()
 
             if not self._snapshot_update_event.is_set():
-                self._snapshot: Game = copy.deepcopy(self.game)
+                self._snapshot: Scene = copy.deepcopy(self.game)
                 # self._snapshot.graphics.set_surface(self.screen)
                 self._snapshot_update_event.set()
 
@@ -105,11 +115,7 @@ class Run:
 
     def _poll_events(self) -> None:
         for e in pygame.event.get():
-            if (
-                e.type == pg_constants.QUIT
-                or e.type == pg_constants.KEYDOWN
-                and e.key == Keys.Q
-            ):
+            if e.type == pg_constants.QUIT:
                 self._stop()
             elif e.type == pg_constants.KEYDOWN:
                 self.game.pressed_keys.add(e.key)
@@ -118,6 +124,7 @@ class Run:
 
     def _stop(self) -> None:
         self._snapshot_update_event.set()
-        self.running = False
+        self.game.stop()
         self.game.exit()
+        self.running = False
         pygame.quit()
