@@ -6,7 +6,7 @@ import threading
 import pygame
 import pygame.constants as pg_constants
 
-from vgame import Scene, Keys
+from vgame import Scene
 from vgame.graphics.sprites import Library
 
 
@@ -39,6 +39,7 @@ class Runner:
         self.game: Scene
         self.screen: pygame.Surface
         self._snapshot: Scene
+        self._draw_loop_thread: threading.Thread
 
         self.running = True
 
@@ -125,5 +126,5 @@ class Runner:
         self._snapshot_update_event.set()
         self.game.stop()
         self.game.exit()
-        pygame.quit()
         self.running = False
+        pygame.quit()
