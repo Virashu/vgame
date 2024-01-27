@@ -1,5 +1,5 @@
 """
-Definition of abstract class Game
+Definition of abstract class Scene
 """
 
 
@@ -8,15 +8,15 @@ from abc import abstractmethod
 from vgame.graphics import Graphics
 
 
-class Game:
-    """Abstract game class
+class Scene:
+    """Abstract scene class
 
     Arguments:
         width: int
-            Width of game window
+            Width of window
 
         height: int
-            Height of game window
+            Height of window
 
         framerate: int
             Frames per second (draw loop)
@@ -25,7 +25,7 @@ class Game:
             Ticks per second (update loop)
 
         title: str
-            Title of game window
+            Title of window
     """
 
     def __init__(
@@ -50,6 +50,12 @@ class Game:
 
         self.graphics = Graphics()
         # Then need to call game.graphics.set_surface(...) from runner
+
+        self._running = True
+
+    def stop(self) -> None:
+        """Stop the game"""
+        self._running = False
 
     @abstractmethod
     def update(self):

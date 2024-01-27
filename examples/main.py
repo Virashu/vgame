@@ -3,13 +3,13 @@
 
 from typing import final
 
-from vgame import Game, Run, Keys
+from vgame import Scene, Runner, Keys
 from vgame.graphics.sprites import Group
 
 from mysprite import MySprite
 
 
-class MyGame(Game):
+class MyGame(Scene):
     @final
     def load(self):
         # Directory with textures
@@ -50,6 +50,9 @@ class MyGame(Game):
         if Keys.W in self.pressed_keys and self.sy1 >= 0:
             self.sy1 -= distance
 
+        if Keys.Q in self.pressed_keys:
+            self.stop()
+
         self.sprite.x = self.sx * 20 + 10
         self.sprite.y = self.sy * 20 + 10
 
@@ -83,4 +86,22 @@ class MyGame(Game):
         print()
 
 
-Run(MyGame(width=800, height=600, framerate=120, tickrate=120, title="Test Game"))
+class TitleScreen(Scene):
+    @final
+    def load(self):
+        ...
+
+    @final
+    def update(self):
+        if Keys.RETURN in self.pressed_keys:
+            self.stop()
+
+    def draw(self):
+        self.graphics.circle((self.width // 2, self.height // 2), 20, (255, 255, 255))
+
+
+runner = Runner()
+runner.run(TitleScreen())
+runner.run(
+    MyGame(width=800, height=600, framerate=120, tickrate=120, title="Test Game")
+)
