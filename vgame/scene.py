@@ -51,11 +51,11 @@ class Scene:
         self.graphics = Graphics()
         # Then need to call game.graphics.set_surface(...) from runner
 
-        self._running = True
+        self.running = True
 
     def stop(self) -> None:
         """Stop the game"""
-        self._running = False
+        self.running = False
 
     @abstractmethod
     def update(self):

@@ -1,6 +1,9 @@
+"""Interface classes"""
+
 from abc import abstractmethod
-import pygame
 from typing import Sequence
+
+import pygame
 
 
 class IGraphics:
@@ -68,6 +71,7 @@ class ISprite:
 
     texture_size: tuple[int, int]
     texture_file: str
+    rect: pygame.Rect
 
     @abstractmethod
     def set_size(self, rect: pygame.Rect) -> None:
@@ -101,7 +105,6 @@ class ILibrary:
     @abstractmethod
     def load(self, *sprites: ISprite) -> None:
         """Preload sprite to the library"""
-        ...
 
     @abstractmethod
     def _add(self, sprite: ISprite) -> None:
@@ -110,4 +113,3 @@ class ILibrary:
     @abstractmethod
     def get(self, target: ISprite) -> pygame.Surface:
         """Get a texture from the library"""
-        ...

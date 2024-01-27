@@ -69,7 +69,7 @@ class Runner:
     def _draw_loop(self):
         clock = pygame.time.Clock()
 
-        while self.game._running:
+        while self.game.running:
             self._snapshot_update_event.wait()
             snapshot = self._snapshot
             self._snapshot_update_event.clear()
@@ -91,7 +91,7 @@ class Runner:
     def _update_loop(self) -> None:
         update_clock = pygame.time.Clock()
 
-        while self.game._running:
+        while self.game.running:
             self.game.delta = update_clock.get_time() / 1000  # ms -> s
             self.game.tps = update_clock.get_fps()
 

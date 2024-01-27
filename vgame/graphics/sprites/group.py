@@ -2,15 +2,15 @@
 
 import pygame
 
-from vgame.graphics.sprites import Sprite, IGraphics
+from vgame.graphics.sprites.types import IGraphics, ISprite
 
 
 class Group(pygame.sprite.Group):
     """Sprite group class"""
 
-    def draw(self, graphics: IGraphics, special_flags: int = 0) -> list[pygame.Rect]:
+    def draw(self, graphics: IGraphics, special_flags: int = 0) -> None:
         """Draw all sprites in group"""
-        sprites: list[Sprite] = self.sprites()
+        sprites: list[ISprite] = self.sprites()
 
         if hasattr(graphics.surface, "blits"):
             sprites_iter = tuple(
@@ -26,8 +26,3 @@ class Group(pygame.sprite.Group):
                     graphics.library.get(spr), spr.rect, None, special_flags
                 )
                 self.spritedict[spr] = rect
-
-        self.lostsprites = []
-        dirty = self.lostsprites
-
-        return dirty

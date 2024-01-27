@@ -5,7 +5,7 @@ import pygame
 from vgame.graphics.sprites.types import ISprite, ILibrary
 
 
-class Library:
+class Library(ILibrary):
     """Sprite texture library"""
 
     def __init__(self) -> None:
