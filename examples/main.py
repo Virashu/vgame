@@ -71,6 +71,8 @@ class MyGame(Scene):
         self.graphics.draw_sprite((self.sprite, self.sprite1))
         self.group.draw(self.graphics)
 
+        self.graphics.text("Hewwo owo!", (0, 0))
+
     @final
     def exit(self):
         print("\x1b[2J\x1b[0;0H", end="")  # clear screen

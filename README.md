@@ -67,9 +67,9 @@ Run(
 
 - [x] Readme
 - [x] Basic structure
-- [ ] Graphics
+- [x] Graphics
   - [x] Texture library
-- [ ] Backend
+- [x] Backend
   - [x] Draw/update loops in separate threads
   - [x] Snapshots
   - [x] Snapshot synchronization
@@ -77,7 +77,7 @@ Run(
   - [ ] Axis
   - [ ] Sounds
   - [ ] Event handling
-  - [ ] quit method
+  - [x] `stop` method
 
 ## Footnotes
 
