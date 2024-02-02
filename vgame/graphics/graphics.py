@@ -85,12 +85,13 @@ class Graphics(IGraphics):
         text: str,
         xy: tuple[float, float],
         color: tuple[int, int, int] = (255, 255, 255),
+        background: tuple[int, int, int] | None = None,
         font_name: str = "Segoe UI",
     ):
         if not pygame.font.get_init():
             pygame.font.init()
         font = pygame.font.SysFont(font_name, 30)
-        text_surface = font.render(text, True, color)
+        text_surface = font.render(text, True, color, background)
         self._surface.blit(text_surface, xy)
 
     def __deepcopy__(self, _) -> "Graphics":

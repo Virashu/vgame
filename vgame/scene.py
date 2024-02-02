@@ -2,7 +2,6 @@
 Definition of abstract class Scene
 """
 
-
 from abc import abstractmethod
 
 from vgame.graphics import Graphics
@@ -56,6 +55,7 @@ class Scene:
     def stop(self) -> None:
         """Stop the game"""
         self.running = False
+        self.exit()
 
     @abstractmethod
     def update(self):
