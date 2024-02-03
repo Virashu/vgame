@@ -2,7 +2,7 @@
 
 import pygame
 
-from vgame.graphics.sprites.types import ISprite, ILibrary
+from .types import ISprite, ILibrary
 
 
 class Library(ILibrary):

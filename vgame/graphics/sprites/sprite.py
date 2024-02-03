@@ -4,7 +4,7 @@ from abc import abstractmethod
 
 from pygame import sprite, Rect
 
-from vgame.graphics.sprites.types import ISprite
+from .types import ISprite
 
 
 class Sprite(ISprite, sprite.Sprite):

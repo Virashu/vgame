@@ -2,7 +2,7 @@
 
 import pygame
 
-from vgame.graphics.sprites.types import IGraphics, ISprite
+from .types import IGraphics, ISprite
 
 
 class Group(pygame.sprite.Group):

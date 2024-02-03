@@ -1,12 +1,12 @@
 """Interface classes"""
 
-from abc import abstractmethod
+from abc import ABC, abstractmethod
 from typing import Sequence
 
 import pygame
 
 
-class IGraphics:
+class IGraphics(ABC):
     """Graphics interface"""
 
     _surface: pygame.Surface
@@ -23,8 +23,7 @@ class IGraphics:
         return self._library
 
     @abstractmethod
-    def __init__(self, screen: pygame.Surface) -> None:
-        ...
+    def __init__(self, screen: pygame.Surface) -> None: ...
 
     @abstractmethod
     def circle(
@@ -64,6 +63,17 @@ class IGraphics:
         color: tuple[int, int, int] = (255, 255, 255),
     ) -> None:
         """Draw a rectangle"""
+
+    @abstractmethod
+    def text(
+        self,
+        text: str,
+        xy: tuple[float, float],
+        color: tuple[int, int, int] = (255, 255, 255),
+        background: tuple[int, int, int] | None = None,
+        font_name: str = "Segoe UI",
+    ):
+        """Draw a text string"""
 
 
 class ISprite:
@@ -107,8 +117,7 @@ class ILibrary:
         """Preload sprite to the library"""
 
     @abstractmethod
-    def _add(self, sprite: ISprite) -> None:
-        ...
+    def _add(self, sprite: ISprite) -> None: ...
 
     @abstractmethod
     def get(self, target: ISprite) -> pygame.Surface:

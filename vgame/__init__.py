@@ -8,7 +8,7 @@ __all__ = ["Scene", "Runner", "graphics", "Keys"]
 # Should be done before importing any modules that use pygame
 # __import__("os").environ["PYGAME_HIDE_SUPPORT_PROMPT"] = "hide"
 
-from vgame import graphics
-from vgame.keys import Keys
-from vgame.scene import Scene
-from vgame.runner import Runner
+from . import graphics
+from .keys import Keys
+from .scene import Scene
+from .runner import Runner

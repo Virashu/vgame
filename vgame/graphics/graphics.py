@@ -5,14 +5,14 @@ from typing import Sequence
 
 import pygame
 
-from vgame.graphics.sprites import Sprite, IGraphics, Library
+from .sprites import Sprite, IGraphics, ILibrary
 
 
 class Graphics(IGraphics):
     """Graphics class"""
 
     def __init__(
-        self, surface: pygame.Surface | None = None, library: Library | None = None
+        self, surface: pygame.Surface | None = None, library: ILibrary | None = None
     ) -> None:
         if surface:
             self._surface = surface
@@ -30,12 +30,12 @@ class Graphics(IGraphics):
         self._surface = surface
 
     @property
-    def library(self) -> Library:
+    def library(self) -> ILibrary:
         """Get the sprite library"""
         return self._library
 
     @library.setter
-    def library(self, library: Library) -> None:
+    def library(self, library: ILibrary) -> None:
         """Set the sprite library"""
         self._library = library
 
