@@ -4,7 +4,7 @@ Definition of abstract class Scene
 
 from abc import abstractmethod
 
-from vgame.graphics import Graphics
+from .graphics import Graphics
 
 
 class Scene:

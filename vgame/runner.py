@@ -6,8 +6,8 @@ import threading
 import pygame
 import pygame.constants as pg_constants
 
-from vgame import Scene
-from vgame.graphics.sprites import Library
+from . import Scene
+from .graphics.sprites import Library
 
 
 class Runner:
