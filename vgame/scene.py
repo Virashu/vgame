@@ -41,7 +41,10 @@ class Scene:
         self.tickrate = tickrate  # for update() method (backend)
         self.title = title
 
-        self.pressed_keys: set[int] = set()
+        self.pressed_keys: set[int] = set()  # Keys that are pressed now
+        self.clicked_keys: set[int] = set()  # Keys that were pressed
+        self.released_keys: set[int] = set()  # Keys that were released
+
         self.delta: float = 0  # Time delta for tickrate, not framerate; seconds
         self.graphics_delta: float = 0
         self.fps: float = 0
@@ -56,6 +59,18 @@ class Scene:
         """Stop the game"""
         self.running = False
         self.exit()
+
+    def get_click(self, key: int) -> bool:
+        """Check if a key was clicked"""
+        state = key in self.clicked_keys
+        self.clicked_keys.discard(key)
+        return state
+
+    def get_release(self, key: int) -> bool:
+        """Check if a key was released"""
+        state = key in self.released_keys
+        self.released_keys.discard(key)
+        return state
 
     @abstractmethod
     def update(self):
