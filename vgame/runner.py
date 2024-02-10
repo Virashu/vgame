@@ -62,8 +62,11 @@ class Runner:
 
         pygame.display.set_caption(self.scene.title)
 
+        screen_flags = 0
+        screen_flags |= pygame.constants.FULLSCREEN if self.scene.fullscreen else 0
+
         self.screen: pygame.Surface = pygame.display.set_mode(
-            (self.scene.width, self.scene.height)
+            (self.scene.width, self.scene.height),
         )
 
         # Snapshot is a completed (fully updated) copy of the game

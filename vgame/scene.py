@@ -34,12 +34,14 @@ class Scene:
         framerate: int = 60,
         tickrate: int = 60,
         title: str = "Game",
+        fullscreen: bool = False,
     ) -> None:
         self.height = height
         self.width = width
         self.framerate = framerate  # for draw() method (graphics)
         self.tickrate = tickrate  # for update() method (backend)
         self.title = title
+        self.fullscreen = fullscreen
 
         self.pressed_keys: set[int] = set()  # Keys that are pressed now
         self.clicked_keys: set[int] = set()  # Keys that were pressed
