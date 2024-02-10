@@ -15,7 +15,20 @@ class Library(ILibrary):
 
     def __init__(self) -> None:
         self._data: dict[str, pygame.Surface] = {}
+        self._originals: dict[str, pygame.Surface] = {}
         self._path: str = ""
+        self._save_originals: bool = False
+
+    @property
+    def save_originals(self) -> bool:
+        """Save the original images in the library
+
+        Consumes more RAM"""
+        return self._save_originals
+
+    @save_originals.setter
+    def save_originals(self, value: bool) -> None:
+        self._save_originals = value
 
     @property
     def path(self) -> str:
