@@ -130,6 +130,7 @@ class Runner:
         for e in pygame.event.get():
             if e.type == pg_constants.QUIT:
                 self._stop()
+
             elif e.type == pg_constants.KEYDOWN:
                 self.scene.pressed_keys.add(e.key)
                 self.scene.clicked_keys.add(e.key)

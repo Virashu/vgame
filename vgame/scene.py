@@ -36,6 +36,7 @@ class Scene:
         title: str = "Game",
         fullscreen: bool = False,
     ) -> None:
+        # Window properties
         self.height = height
         self.width = width
         self.framerate = framerate  # for draw() method (graphics)
@@ -43,10 +44,12 @@ class Scene:
         self.title = title
         self.fullscreen = fullscreen
 
+        # Input
         self.pressed_keys: set[int] = set()  # Keys that are pressed now
         self.clicked_keys: set[int] = set()  # Keys that were pressed
         self.released_keys: set[int] = set()  # Keys that were released
 
+        # Timing
         self.delta: float = 0  # Time delta for tickrate, not framerate; seconds
         self.graphics_delta: float = 0
         self.fps: float = 0
