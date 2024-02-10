@@ -70,7 +70,7 @@ class MyGame(Scene):
         self.graphics.draw_sprite((self.sprite, self.sprite1))
         self.group.draw(self.graphics)
 
-        self.graphics.text("Hewwo owo!", (0, 0))
+        self.graphics.text("Hello, world!", (0, 0))
 
     @final
     def exit(self):
@@ -93,9 +93,10 @@ class TitleScreen(Scene):
 
     @final
     def update(self):
-        if Keys.RETURN in self.pressed_keys:
+        if self.get_click(Keys.RETURN):
             self.stop()
 
+    @final
     def draw(self):
         self.graphics.circle((self.width // 2, self.height // 2), 20, (255, 255, 255))
 
