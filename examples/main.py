@@ -1,6 +1,5 @@
 """An example Game class implementation"""
 
-
 from typing import final
 
 from vgame import Scene, Runner, Keys
@@ -90,8 +89,7 @@ class MyGame(Scene):
 
 class TitleScreen(Scene):
     @final
-    def load(self):
-        ...
+    def load(self): ...
 
     @final
     def update(self):
@@ -105,5 +103,12 @@ class TitleScreen(Scene):
 runner = Runner()
 runner.run(TitleScreen())
 runner.run(
-    MyGame(width=800, height=600, framerate=120, tickrate=120, title="Test Game")
+    MyGame(
+        width=800,
+        height=600,
+        framerate=120,
+        tickrate=120,
+        title="Test Game",
+        fullscreen=True,
+    )
 )
