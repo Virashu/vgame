@@ -1,8 +1,13 @@
 """Sprite texture library class definition"""
 
+import logging
+
 import pygame
 
 from .types import ISprite, ILibrary
+
+
+logger = logging.getLogger(__name__)
 
 
 class Library(ILibrary):
@@ -10,7 +15,20 @@ class Library(ILibrary):
 
     def __init__(self) -> None:
         self._data: dict[str, pygame.Surface] = {}
+        self._originals: dict[str, pygame.Surface] = {}
         self._path: str = ""
+        self._save_originals: bool = False
+
+    @property
+    def save_originals(self) -> bool:
+        """Save the original images in the library
+
+        Consumes more RAM"""
+        return self._save_originals
+
+    @save_originals.setter
+    def save_originals(self, value: bool) -> None:
+        self._save_originals = value
 
     @property
     def path(self) -> str:
@@ -29,6 +47,12 @@ class Library(ILibrary):
 
     def _add(self, sprite: ISprite) -> None:
         texture_file, texture_size = sprite.texture_file, sprite.texture_size
+
+        if texture_file in self._data:
+            return
+
+        logger.info("Loading texture %s %s", texture_file, texture_size)
+
         texture = pygame.image.load(self._path + "/" + texture_file)
         rect = texture.get_rect()
         if sprite.texture_size not in ((0, 0), (rect.w, rect.h)):

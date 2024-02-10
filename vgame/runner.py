@@ -39,7 +39,6 @@ class Runner:
         self.scene: Scene
         self.screen: pygame.Surface
         self._snapshot: Scene
-        self._draw_loop_thread: threading.Thread
 
         self.running = True
 
@@ -62,8 +61,16 @@ class Runner:
 
         pygame.display.set_caption(self.scene.title)
 
+        self._run()
+
+    def _draw_loop(self):
+        clock = pygame.time.Clock()
+
+        screen_flags = 0
+        screen_flags |= pygame.constants.FULLSCREEN if self.scene.fullscreen else 0
+
         self.screen: pygame.Surface = pygame.display.set_mode(
-            (self.scene.width, self.scene.height)
+            (self.scene.width, self.scene.height), flags=screen_flags
         )
 
         # Snapshot is a completed (fully updated) copy of the game
@@ -71,27 +78,24 @@ class Runner:
 
         self.scene.graphics.surface = self.screen
 
-        self._run()
-
-    def _draw_loop(self):
-        clock = pygame.time.Clock()
-
         while self.scene.running:
-            self._snapshot_update_event.wait()
-            snapshot = self._snapshot
-            self._snapshot_update_event.clear()
+            self._poll_events()
 
-            if self.auto_clear:
-                self.screen.fill((0, 0, 0))
+            if self._snapshot_update_event.is_set():
+                snapshot = self._snapshot
+                self._snapshot_update_event.clear()
 
-            self.scene.graphics_delta = snapshot.graphics_delta = (
-                clock.get_time() / 1000
-            )  # ms -> s
-            self.scene.fps = snapshot.fps = clock.get_fps()
+                if self.auto_clear:
+                    self.screen.fill((0, 0, 0))
 
-            snapshot.draw()
+                self.scene.graphics_delta = snapshot.graphics_delta = (
+                    clock.get_time() / 1000
+                )  # ms -> s
+                self.scene.fps = snapshot.fps = clock.get_fps()
 
-            pygame.display.flip()
+                snapshot.draw()
+
+                pygame.display.flip()
 
             clock.tick(self.scene.framerate)
 
@@ -113,20 +117,23 @@ class Runner:
 
             update_clock.tick(self.scene.tickrate)
 
-            self._poll_events()
-
     def _run(self) -> None:
-        self._draw_loop_thread = threading.Thread(target=self._draw_loop, daemon=True)
-        self._draw_loop_thread.start()
+        # draw_thread = threading.Thread(target=self._draw_loop, daemon=True)
+        # draw_thread.start()
+        update_thread = threading.Thread(target=self._update_loop, daemon=True)
+        update_thread.start()
 
-        self._update_loop()
+        # self._update_loop()
+        self._draw_loop()
 
-        self._draw_loop_thread.join()
+        # draw_thread.join()
+        update_thread.join()
 
     def _poll_events(self) -> None:
         for e in pygame.event.get():
             if e.type == pg_constants.QUIT:
                 self._stop()
+
             elif e.type == pg_constants.KEYDOWN:
                 self.scene.pressed_keys.add(e.key)
                 self.scene.clicked_keys.add(e.key)
