@@ -67,8 +67,14 @@ class Graphics(IGraphics):
         xy: tuple[float, float],
         size: tuple[float, float],
         color: tuple[int, int, int] = (255, 255, 255),
+        alpha: int = 255,
     ) -> None:
-        pygame.draw.rect(self._surface, color, (xy, size))
+        if alpha == 255:
+            pygame.draw.rect(self._surface, color, (xy, size))
+        else:
+            shape_surf = pygame.Surface(pygame.Rect(xy, size).size, pygame.SRCALPHA)
+            pygame.draw.rect(shape_surf, color, shape_surf.get_rect())
+            self._surface.blit(shape_surf, (xy, size))
 
     def draw_sprite(self, target: Sprite | Sequence[Sprite]) -> None:
         if isinstance(target, Sprite):
