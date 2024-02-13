@@ -66,10 +66,9 @@ class Graphics(IGraphics):
         self,
         xy: tuple[float, float],
         size: tuple[float, float],
-        color: tuple[int, int, int] = (255, 255, 255),
-        alpha: int = 255,
+        color: tuple[int, int, int] | tuple[int, int, int, int] = (255, 255, 255),
     ) -> None:
-        if alpha == 255:
+        if len(color) == 3 or color[3] == 255:
             pygame.draw.rect(self._surface, color, (xy, size))
         else:
             shape_surf = pygame.Surface(pygame.Rect(xy, size).size, pygame.SRCALPHA)
