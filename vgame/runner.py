@@ -78,8 +78,8 @@ class Runner:
 
         self.scene.graphics.surface = self.screen
 
+        self._poll_events()
         while self.scene.running:
-            self._poll_events()
 
             if self._snapshot_update_event.is_set():
                 snapshot = self._snapshot
@@ -97,6 +97,7 @@ class Runner:
 
                 pygame.display.flip()
 
+            self._poll_events()
             clock.tick(self.scene.framerate)
 
     def _update_loop(self) -> None:
