@@ -72,6 +72,7 @@ class IGraphics(ABC):
         color: tuple[int, int, int] = (255, 255, 255),
         background: tuple[int, int, int] | None = None,
         font_name: str = "Segoe UI",
+        font_size: int = 24,
     ):
         """Draw a text string"""
 
