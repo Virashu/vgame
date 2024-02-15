@@ -92,10 +92,11 @@ class Graphics(IGraphics):
         color: tuple[int, int, int] = (255, 255, 255),
         background: tuple[int, int, int] | None = None,
         font_name: str = "Segoe UI",
+        font_size: int = 24,
     ):
         if not pygame.font.get_init():
             pygame.font.init()
-        font = pygame.font.SysFont(font_name, 30)
+        font = pygame.font.SysFont(font_name, font_size)
         text_surface = font.render(text, True, color, background)
         self._surface.blit(text_surface, xy)
 
