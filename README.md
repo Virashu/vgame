@@ -39,9 +39,9 @@ Examples directory contains basic implementation.
 Structure looks like this:
 
 ```python
-from vgame import Game, Run
+from vgame import Scene, Runner
 
-class MyGame(Game):
+class MyGame(Scene):
     def load(self):
       # actions before game loads
 
@@ -57,7 +57,7 @@ class MyGame(Game):
       # actions before exit
 
 
-Run(
+Runner.run(
     MyGame(width=800, height=600, framerate=120, tickrate=120, title="Game")
 )
 
