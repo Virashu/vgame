@@ -65,21 +65,16 @@ Runner.run(
 
 ## TODO
 
-- [x] Readme
-- [x] Basic structure
 - [x] Graphics
   - [x] Texture library
-- [x] Backend
-  - [x] Draw/update loops in separate threads
-  - [x] Snapshots
-  - [x] Snapshot synchronization
-  - [x] PyGame sprite integration
-  - [ ] Axis
-  - [ ] Sounds
-  - [ ] Event handling
-  - [x] `stop` method
+- [ ] Events
+- [ ] Axis (controls)
+- [ ] Sounds + music
+- [ ] Template classes & modules
+  - [ ] Physics
+  - [ ] GUI
+  - [ ] Players
 
 ## Footnotes
 
-<b id="f1">1</b> Love2D is an 2D game engine for lua available [here](https://love2d.org).
-[↩](#a1)
+<b id="f1">1</b> Love2D is an 2D game engine for lua available [here](https://love2d.org). [↩](#a1)

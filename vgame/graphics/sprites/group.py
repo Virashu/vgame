@@ -2,15 +2,15 @@
 
 import pygame
 
-from .types import IGraphics, ISprite
+from .typing import AbstractGraphics, AbstractSprite
 
 
 class Group(pygame.sprite.Group):
     """Sprite group class"""
 
-    def draw(self, graphics: IGraphics, special_flags: int = 0) -> None:
+    def draw(self, graphics: AbstractGraphics, special_flags: int = 0) -> None:
         """Draw all sprites in group"""
-        sprites: list[ISprite] = self.sprites()
+        sprites: list[AbstractSprite] = self.sprites()
 
         if hasattr(graphics.surface, "blits"):
             sprites_iter = tuple(

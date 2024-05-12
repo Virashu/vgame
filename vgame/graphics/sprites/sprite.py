@@ -2,20 +2,19 @@
 
 from abc import abstractmethod
 
-from pygame import sprite, Rect
+from pygame import Rect
+from pygame.sprite import Sprite as PygameSprite
 
-from .types import ISprite
+from .texture import Texture
+from .typing import AbstractSprite, AbstractTexturedSprite
 
 
-class Sprite(ISprite, sprite.Sprite):
-    """Abstract sprite class"""
+class Sprite(AbstractSprite, PygameSprite):
+    """Base sprite class"""
 
     def __init__(self) -> None:
         super().__init__()
 
-        self.texture_file: str = ""  # filename
-        self.texture: str = ""  # hash id
-        self.texture_size: tuple[int, int] = (0, 0)
         self._rect: Rect = Rect(0, 0, 0, 0)
 
     @property
@@ -35,3 +34,12 @@ class Sprite(ISprite, sprite.Sprite):
     @abstractmethod
     def update(self, delta: float) -> None:
         """Inheritor-defined abstract update method"""
+
+
+class TexturedSprite(AbstractTexturedSprite, Sprite):
+    """Textured sprite class"""
+
+    def __init__(self, texture_file: str, texture_size: tuple[int, int]) -> None:
+        super().__init__()
+
+        self.texture = Texture(texture_file, texture_size)

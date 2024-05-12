@@ -1,18 +1,26 @@
 """Graphics class definition"""
 
 import copy
-from typing import Sequence
+from typing import final
 
 import pygame
 
-from .sprites import Sprite, IGraphics, ILibrary
+from .sprites import (
+    AbstractGraphics,
+    AbstractLibrary,
+    AbstractSprite,
+)
+
+from .sprites.texture import Texture
 
 
-class Graphics(IGraphics):
+class Graphics(AbstractGraphics):
     """Graphics class"""
 
     def __init__(
-        self, surface: pygame.Surface | None = None, library: ILibrary | None = None
+        self,
+        surface: pygame.Surface | None = None,
+        library: AbstractLibrary | None = None,
     ) -> None:
         if surface:
             self._surface = surface
@@ -30,12 +38,12 @@ class Graphics(IGraphics):
         self._surface = surface
 
     @property
-    def library(self) -> ILibrary:
+    def library(self) -> AbstractLibrary:
         """Get the sprite library"""
         return self._library
 
     @library.setter
-    def library(self, library: ILibrary) -> None:
+    def library(self, library: AbstractLibrary) -> None:
         """Set the sprite library"""
         self._library = library
 
@@ -75,15 +83,34 @@ class Graphics(IGraphics):
             pygame.draw.rect(shape_surf, color, shape_surf.get_rect())
             self._surface.blit(shape_surf, (xy, size))
 
-    def draw_sprite(self, target: Sprite | Sequence[Sprite]) -> None:
-        if isinstance(target, Sprite):
+    def _draw_textured_sprites(self, *sprites: AbstractSprite) -> None:
+        if len(sprites) == 1:
+            target: AbstractSprite = sprites[0]
             texture = self._library.get(target)
 
             self._surface.blit(texture, target.rect)
         else:
-            self._surface.blits(
-                [(self._library.get(sprite), sprite.rect) for sprite in target]
+            sprites_info = tuple(
+                (self._library.get(sprite), sprite.rect) for sprite in sprites
             )
+            self._surface.blits(sprites_info)
+
+    @final
+    def draw_sprites(self, *sprites: AbstractSprite) -> None:
+        _sprites: set[AbstractSprite] = set(sprites)
+        textured = set(
+            filter(
+                lambda s: hasattr(s, "texture") and isinstance(s.texture, Texture),
+                _sprites,
+            )
+        )
+        if any(textured):
+            self._draw_textured_sprites(*textured)
+
+        non_textured = _sprites - textured
+
+        for sprite in non_textured:
+            sprite.draw(self)
 
     def text(
         self,

@@ -1,5 +1,7 @@
 """Event keys enums"""
 
+__all__ = ["Keys"]
+
 from enum import IntEnum
 
 import pygame.constants as pg_keys

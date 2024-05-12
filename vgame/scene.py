@@ -2,6 +2,8 @@
 Definition of abstract class Scene
 """
 
+__all__  = ["Scene"]
+
 from abc import abstractmethod
 
 from .graphics import Graphics

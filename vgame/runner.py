@@ -1,34 +1,19 @@
 """Scene runner class definition"""
 
 import copy
-import threading
 import pathlib
+import threading
 
 import pygame
 import pygame.constants as pg_constants
 
-from . import Scene
-from .graphics.sprites import Library
+from .graphics.sprites import LibDirectoryNotFoundError, Library
+from .scene import Scene
+from .singleton import Singleton
 
 
-class Runner:
+class Runner(Singleton):
     """Scene runner class"""
-
-    __lock = False
-
-    @classmethod
-    def clear_lock(cls) -> None:
-        """Clear the instance lock"""
-        cls.__lock = False
-
-    def __new__(cls) -> "Runner":
-        if cls.__lock:
-            raise RuntimeError("Can only create one instance of class")
-        cls.__lock = True
-        return object.__new__(cls)
-
-    def __del__(self):
-        self.__class__.clear_lock()
 
     def __init__(self) -> None:
         self.auto_clear = True
@@ -47,16 +32,17 @@ class Runner:
         if not self.running:
             return
 
-        self.scene: Scene = scene
+        self.scene = scene
 
         self.scene.graphics.library = Library()
         self.scene.load()
 
         if not pathlib.Path(self.scene.graphics.library.path).exists():
-            raise RuntimeError(
+            raise LibDirectoryNotFoundError(
                 "Sprite library path does not exist or not set: "
-                f"{self.scene.graphics.library.path}"
-                '\nPlease use\n\tself.graphics.library.path = "<path>"'
+                f"{self.scene.graphics.library.path}\n"
+                "Please use:\n"
+                '\tself.graphics.library.path = "<path>"'
             )
 
         pygame.display.set_caption(self.scene.title)
@@ -69,12 +55,12 @@ class Runner:
         screen_flags = 0
         screen_flags |= pygame.constants.FULLSCREEN if self.scene.fullscreen else 0
 
-        self.screen: pygame.Surface = pygame.display.set_mode(
+        self.screen = pygame.display.set_mode(
             (self.scene.width, self.scene.height), flags=screen_flags
         )
 
         # Snapshot is a completed (fully updated) copy of the game
-        self._snapshot: Scene = self.scene
+        self._snapshot = self.scene
 
         self.scene.graphics.surface = self.screen
 
@@ -111,7 +97,7 @@ class Runner:
 
             if not self._snapshot_update_event.is_set():
 
-                self._snapshot: Scene = copy.deepcopy(self.scene)
+                self._snapshot = copy.deepcopy(self.scene)
 
                 # self._snapshot.graphics.set_surface(self.screen)
                 self._snapshot_update_event.set()
@@ -142,6 +128,8 @@ class Runner:
             elif e.type == pg_constants.KEYUP:
                 self.scene.pressed_keys.discard(e.key)
                 self.scene.released_keys.add(e.key)
+
+            # elif e.type == pg_constants.
 
     def _stop(self) -> None:
         self._snapshot_update_event.set()

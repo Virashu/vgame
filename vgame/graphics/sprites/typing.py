@@ -1,16 +1,26 @@
 """Interface classes"""
 
+from __future__ import annotations
+
+__all__ = [
+    "AbstractGraphics",
+    "AbstractLibrary",
+    "AbstractSprite",
+    "AbstractTexturedSprite",
+]
+
 from abc import ABC, abstractmethod
-from typing import Sequence
+
+from .texture import Texture
 
 import pygame
 
 
-class IGraphics(ABC):
+class AbstractGraphics(ABC):
     """Graphics interface"""
 
     _surface: pygame.Surface
-    _library: "ILibrary"
+    _library: AbstractLibrary
 
     @property
     def surface(self) -> pygame.Surface:
@@ -18,7 +28,7 @@ class IGraphics(ABC):
         return self._surface
 
     @property
-    def library(self) -> "ILibrary":
+    def library(self) -> AbstractLibrary:
         """Get the sprite library"""
         return self._library
 
@@ -42,10 +52,6 @@ class IGraphics(ABC):
         color: tuple[int, int, int] = (255, 255, 255),
     ) -> None:
         """Draw a line"""
-
-    @abstractmethod
-    def draw_sprite(self, target: "ISprite" | Sequence["ISprite"]) -> None:
-        """Draw a sprite"""
 
     @abstractmethod
     def polygon(
@@ -76,50 +82,54 @@ class IGraphics(ABC):
     ):
         """Draw a text string"""
 
+    @abstractmethod
+    def draw_sprites(self, *sprites: AbstractSprite) -> None:
+        """Draw a sprite"""
 
-class ISprite:
+
+class AbstractLibrary(ABC):
+    """Sprite texture library"""
+
+    path: str
+
+    _data: dict[str, pygame.Surface]
+
+    @abstractmethod
+    def load(self, *sprites: AbstractTexturedSprite) -> None:
+        """Preload sprite to the library"""
+
+    @abstractmethod
+    def _add(self, sprite: AbstractTexturedSprite) -> None: ...
+
+    @abstractmethod
+    def get(self, target: AbstractTexturedSprite) -> pygame.Surface:
+        """Get a texture from the library"""
+
+
+class AbstractSprite(ABC):
     """Sprite interface"""
 
-    texture_size: tuple[int, int]
-    texture_file: str
-    rect: pygame.Rect
+    _rect: pygame.Rect
 
     @abstractmethod
     def set_size(self, rect: pygame.Rect) -> None:
         """Set the sprite size"""
 
     @abstractmethod
-    def draw(self, graphics: "IGraphics") -> None:
+    def draw(self, graphics: AbstractGraphics) -> None:
         """Draw the sprite"""
 
     @abstractmethod
     def update(self, delta: float) -> None:
-        """Update the sprite"""
-
-
-class ILibrary:
-    """Sprite texture library"""
-
-    _path: str
-    _data: dict[str, pygame.Surface]
+        """Inheritor-defined abstract update method"""
 
     @property
-    def path(self) -> str:
-        """Get the path to the sprite images"""
-        return self._path
-
-    @path.setter
-    def path(self, path: str) -> None:
-        """Set the path to the sprite images"""
-        self._path = path
-
     @abstractmethod
-    def load(self, *sprites: ISprite) -> None:
-        """Preload sprite to the library"""
+    def rect(self) -> pygame.Rect:
+        """Get the sprite rect"""
 
-    @abstractmethod
-    def _add(self, sprite: ISprite) -> None: ...
 
-    @abstractmethod
-    def get(self, target: ISprite) -> pygame.Surface:
-        """Get a texture from the library"""
+class AbstractTexturedSprite(AbstractSprite, ABC):
+    """Textured sprite interface"""
+
+    texture: Texture
