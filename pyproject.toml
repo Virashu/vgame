@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "vgame"
-version = "1.6.4"
+version = "1.7.4"
 description = ""
 authors = ["Vlad <89295404+Virashu@users.noreply.github.com>"]
 readme = "README.md"
