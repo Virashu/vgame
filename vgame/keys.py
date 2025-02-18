@@ -18,13 +18,13 @@ class Keys(IntEnum):
     F = pg_keys.K_f
     G = pg_keys.K_g
     H = pg_keys.K_h
-    I = pg_keys.K_i
+    I = pg_keys.K_i  # noqa: E741 (literal letter)
     J = pg_keys.K_j
     K = pg_keys.K_k
     L = pg_keys.K_l
     M = pg_keys.K_m
     N = pg_keys.K_n
-    O = pg_keys.K_o
+    O = pg_keys.K_o  # noqa: E741 (literal letter)
     P = pg_keys.K_p
     Q = pg_keys.K_q
     R = pg_keys.K_r

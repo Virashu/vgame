@@ -1,5 +1,7 @@
 """Graphics class definition"""
 
+from __future__ import annotations
+
 import copy
 from typing import final
 
@@ -8,9 +10,8 @@ import pygame
 from .sprites import (
     AbstractGraphics,
     AbstractLibrary,
-    AbstractSprite,
+    AbstractTexturedSprite,
 )
-
 from .sprites.texture import Texture
 
 
@@ -83,9 +84,9 @@ class Graphics(AbstractGraphics):
             pygame.draw.rect(shape_surf, color, shape_surf.get_rect())
             self._surface.blit(shape_surf, (xy, size))
 
-    def _draw_textured_sprites(self, *sprites: AbstractSprite) -> None:
+    def _draw_textured_sprites(self, *sprites: AbstractTexturedSprite) -> None:
         if len(sprites) == 1:
-            target: AbstractSprite = sprites[0]
+            target: AbstractTexturedSprite = sprites[0]
             texture = self._library.get(target)
 
             self._surface.blit(texture, target.rect)
@@ -96,8 +97,8 @@ class Graphics(AbstractGraphics):
             self._surface.blits(sprites_info)
 
     @final
-    def draw_sprites(self, *sprites: AbstractSprite) -> None:
-        _sprites: set[AbstractSprite] = set(sprites)
+    def draw_sprites(self, *sprites: AbstractTexturedSprite) -> None:
+        _sprites: set[AbstractTexturedSprite] = set(sprites)
         textured = set(
             filter(
                 lambda s: hasattr(s, "texture") and isinstance(s.texture, Texture),
@@ -120,12 +121,14 @@ class Graphics(AbstractGraphics):
         background: tuple[int, int, int] | None = None,
         font_name: str = "Segoe UI",
         font_size: int = 24,
-    ):
+    ) -> None:
         if not pygame.font.get_init():
             pygame.font.init()
         font = pygame.font.SysFont(font_name, font_size)
-        text_surface = font.render(text, True, color, background)
+        text_surface = font.render(
+            text, antialias=True, color=color, background=background
+        )
         self._surface.blit(text_surface, xy)
 
-    def __deepcopy__(self, _) -> "Graphics":
+    def __deepcopy__(self, _) -> Graphics:
         return copy.copy(self)

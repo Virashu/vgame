@@ -10,10 +10,12 @@ __all__ = [
 ]
 
 from abc import ABC, abstractmethod
+from typing import TYPE_CHECKING
 
-from .texture import Texture
+if TYPE_CHECKING:
+    import pygame
 
-import pygame
+    from .texture import Texture
 
 
 class AbstractGraphics(ABC):
@@ -79,7 +81,7 @@ class AbstractGraphics(ABC):
         background: tuple[int, int, int] | None = None,
         font_name: str = "Segoe UI",
         font_size: int = 24,
-    ):
+    ) -> None:
         """Draw a text string"""
 
     @abstractmethod

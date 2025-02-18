@@ -1,6 +1,4 @@
-"""
-VGame is a 2D game engine written in Python
-"""
+"""VGame is a 2D game engine written in Python"""
 
 __all__ = [
     "graphics",
@@ -10,9 +8,11 @@ __all__ = [
     "Axis",
 ]
 
+# ruff: noqa: E402
+
 # Hide PyGame welcome message
 # Should be done before importing any modules that use pygame
-# __import__("os").environ["PYGAME_HIDE_SUPPORT_PROMPT"] = "hide"
+__import__("os").environ["PYGAME_HIDE_SUPPORT_PROMPT"] = "hide"
 
 from . import graphics
 from .axis import Axis

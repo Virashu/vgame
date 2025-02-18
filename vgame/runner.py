@@ -38,18 +38,19 @@ class Runner(Singleton):
         self.scene.load()
 
         if not pathlib.Path(self.scene.graphics.library.path).exists():
-            raise LibDirectoryNotFoundError(
+            msg = (
                 "Sprite library path does not exist or not set: "
                 f"{self.scene.graphics.library.path}\n"
                 "Please use:\n"
                 '\tself.graphics.library.path = "<path>"'
             )
+            raise LibDirectoryNotFoundError(msg)
 
         pygame.display.set_caption(self.scene.title)
 
         self._run()
 
-    def _draw_loop(self):
+    def _draw_loop(self) -> None:
         clock = pygame.time.Clock()
 
         screen_flags = 0
@@ -66,7 +67,6 @@ class Runner(Singleton):
 
         self._poll_events()
         while self.scene.running:
-
             if self._snapshot_update_event.is_set():
                 snapshot = self._snapshot
                 self._snapshot_update_event.clear()
@@ -96,7 +96,6 @@ class Runner(Singleton):
             self.scene.update()
 
             if not self._snapshot_update_event.is_set():
-
                 self._snapshot = copy.deepcopy(self.scene)
 
                 # self._snapshot.graphics.set_surface(self.screen)

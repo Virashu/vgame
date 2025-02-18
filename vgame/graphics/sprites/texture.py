@@ -1,5 +1,11 @@
+from __future__ import annotations
+
+
 class Texture:
-    def __init__(self, file: str, size: tuple[float, float]) -> None:
+    file: str
+    size: tuple[int, int]
+
+    def __init__(self, file: str, size: tuple[int, int]) -> None:
         self.file = file
         self.size = size
 

@@ -1,8 +1,6 @@
-"""
-Definition of abstract class Scene
-"""
+"""Definition of abstract class Scene"""
 
-__all__  = ["Scene"]
+__all__ = ["Scene"]
 
 from abc import abstractmethod
 
@@ -27,6 +25,7 @@ class Scene:
 
         title: str
             Title of window
+
     """
 
     def __init__(
@@ -36,6 +35,7 @@ class Scene:
         framerate: int = 60,
         tickrate: int = 60,
         title: str = "Game",
+        *,
         fullscreen: bool = False,
     ) -> None:
         # Window properties
@@ -80,7 +80,7 @@ class Scene:
         return state
 
     @abstractmethod
-    def update(self):
+    def update(self) -> None:
         """Inheritor-defined abstract update method
 
         Called as frequent as possible
@@ -89,21 +89,21 @@ class Scene:
         """
 
     @abstractmethod
-    def draw(self):
+    def draw(self) -> None:
         """Inheritor-defined abstract draw method
 
         Called according to framerate
         """
 
     @abstractmethod
-    def load(self):
+    def load(self) -> None:
         """Inheritor-defined abstract load method
 
         Called after main initialization
         """
 
     @abstractmethod
-    def exit(self):
+    def exit(self) -> None:
         """Inheritor-defined abstract exit method
 
         Called before application close

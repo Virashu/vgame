@@ -13,9 +13,10 @@ class Singleton:
 
     def __new__(cls) -> Self:
         if cls.__lock:
-            raise RuntimeError("Can only create one instance of class")
+            msg = "Can only create one instance of class"
+            raise RuntimeError(msg)
         cls.__lock = True
         return object.__new__(cls)
 
-    def __del__(self):
+    def __del__(self) -> None:
         self.__class__.clear_lock()

@@ -16,7 +16,7 @@ class Library(AbstractLibrary):
         self.path: str = ""
         self.save_originals: bool = False
 
-        self._data: dict[str, pygame.Surface] = {}
+        self._textures: dict[str, pygame.Surface] = {}
         self._originals: dict[str, pygame.Surface] = {}
 
     def load(self, *sprites: AbstractTexturedSprite) -> None:
@@ -46,25 +46,23 @@ class Library(AbstractLibrary):
 
         resource_name = sprite.texture.id
 
-        self._data[resource_name] = texture
+        self._textures[resource_name] = texture
 
     def __contains__(self, sprite: AbstractTexturedSprite) -> bool:
-        return sprite.texture.id in self._data
+        return sprite.texture.id in self._textures
 
     def get(
-        self, target: AbstractTexturedSprite, refresh: bool = False
+        self, target: AbstractTexturedSprite, *, refresh: bool = False
     ) -> pygame.Surface:
         """Get a texture from the library"""
         texture_id = target.texture.id
 
-        if (not refresh) and (texture := self._data.get(texture_id)):
+        if (not refresh) and (texture := self._textures.get(texture_id)):
             return texture
 
         self._add(target)
 
-        texture = self._data[texture_id]
-
-        return texture
+        return self._textures[texture_id]
 
 
 class LibDirectoryNotFoundError(BaseException): ...
